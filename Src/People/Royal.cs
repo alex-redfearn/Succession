@@ -1,23 +1,34 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Succession.People
 {
     public class Royal : IPerson
     {
+        // Ranges from 0 to 1.
+        private decimal _royalBlood = 0;
+        public decimal RoyalBlood
+        {
+            get { return _royalBlood; }
+        }
         public string Name { get; private set; }
-        public decimal RoyalBlood { get; private set; }
-        public IPerson Father { get; private set; }
-        public IPerson Mother { get; private set; }
+        public IPerson ParentOne { get; set; }
+        public IPerson ParentTwo { get; set; }
+        public List<Royal> Children { get; }
 
-        public Royal(string name, IPerson father, IPerson mother)
+        public Royal(string name, IPerson parentOne, IPerson parentTwo)
         {
             Name = name;
-            Father = father;
-            Mother = mother;
-            RoyalBlood = CalculateRoyalBlood(father, mother);
+            ParentOne = parentOne;
+            ParentTwo = parentTwo;
+            Children = new List<Royal>();
         }
 
-        private decimal CalculateRoyalBlood(IPerson father, IPerson mother)
+        public void SetRoyalBlood()
         {
-            return ((father.RoyalBlood + mother.RoyalBlood) / 2);
+            // A person gets half the blood from the father and the other half from the mother.
+            _royalBlood = (ParentOne.RoyalBlood + ParentTwo.RoyalBlood) / 2;
         }
     }
 }
