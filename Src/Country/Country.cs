@@ -5,12 +5,32 @@ namespace Succession
 {
     public class Country
     {
-        public Founder Founder { get; }
-        public ReadOnlyDictionary<string, IPerson> Population { get; }
-        public Country(ICountryInput input)
+        private readonly Population _population;
+        public Country(Population population)
         {
-            Founder = input.GetFounder();
-            Population = input.GetPeople();
+            _population = population;
+        }
+
+        public string GetHeir()
+        {
+            ReadOnlyDictionary<string, IPerson> people = _population.GetPeople();
+            ReadOnlyCollection<string> claimants = _population.GetClaimants();
+
+            string heir = "";
+            decimal royalBlood = 0;
+            foreach (string name in claimants)
+            {
+                if (people.TryGetValue(name, out IPerson person))
+                {
+                    if(person.RoyalBlood > royalBlood)
+                    {
+                        heir = person.Name;
+                        royalBlood = person.RoyalBlood;
+                    }
+                }
+            }
+
+            return heir;
         }
     }
 }

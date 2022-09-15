@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.ObjectModel;
 using Succession.Input;
 using Succession.People;
 using Succession.Util;
@@ -11,19 +9,17 @@ namespace Succession
     {
         public static void Main(string[] args)
         {
-            ConsoleInput input = new ConsoleInput();
-            Country utopia = new Country(input);
+            IPopulationInput input = new ConsoleInput();
+            Country utopia = CreateCountry(input);
 
-            ReadOnlyDictionary<string, IPerson> population = utopia.Population;
+            string heir = utopia.GetHeir();
+            Console.WriteLine(heir);
+        }
 
-            foreach(var item in population)
-            {
-                IPerson person = item.Value;
-                string children = String.Join(",",person.Children.Select(child => child.Name));
-
-                Console.WriteLine($"Name {person.Name}, Royal Blood {person.RoyalBlood}");
-            }
-            
+        private static Country CreateCountry(IPopulationInput input)
+        {
+            Population population = new Population(input);
+            return new Country(population);
         }
     }
 }
