@@ -13,14 +13,14 @@ namespace Succession
 
         public string GetHeir()
         {
-            ReadOnlyDictionary<string, IPerson> people = _population.GetPeople();
-            ReadOnlyCollection<string> claimants = _population.GetClaimants();
+            Founder founder = _population.GetFounder();
+            ReadOnlyDictionary<string, IPerson> descendants = _population.GetDescendants(founder);
 
             string heir = "";
             decimal royalBlood = 0;
-            foreach (string name in claimants)
+            foreach (string name in _population.GetClaimants())
             {
-                if (people.TryGetValue(name, out IPerson person))
+                if (descendants.TryGetValue(name, out IPerson person))
                 {
                     if(person.RoyalBlood > royalBlood)
                     {

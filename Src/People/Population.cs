@@ -14,14 +14,21 @@ namespace Succession.People
             _input = input;
         }
 
-        public ReadOnlyDictionary<string, IPerson> GetPeople()
+        public Founder GetFounder()
         {
-            Dictionary<string, IPerson> people = new Dictionary<string, IPerson>();
-            
-            Founder founder = new Founder(_input.GetFounder());
+            return new Founder(_input.GetFounder());
+        }
+
+        public ReadOnlyCollection<string> GetClaimants()
+        {
+            return _input.GetClaimants();
+        }
+
+        public ReadOnlyDictionary<string, IPerson> GetDescendants(Founder founder)
+        {
+            Dictionary<string, IPerson> people = new Dictionary<string, IPerson>();            
             people.Add(founder.Name, founder);
 
-            // Lines 2 > family count contain the families in the format: child parentOne parentTwo
             foreach (string family in _input.GetFamilies())
             {
                 string[] familyMembers = SplitFamily(family);
@@ -33,6 +40,7 @@ namespace Succession.People
 
         private string[] SplitFamily(string family)
         {
+            // Families are provided in the format child parentOne parentTwo
             return Parse.SplitList(family, " ");
         }
 
@@ -92,11 +100,6 @@ namespace Succession.People
                 child.SetRoyalBlood();
                 UpdateDescendants(people, child);
             }
-        }
-
-        public ReadOnlyCollection<string> GetClaimants()
-        {
-            return _input.GetClaimants();
         }
     }
 }
