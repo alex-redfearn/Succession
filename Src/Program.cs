@@ -1,25 +1,17 @@
 ﻿using System;
 using Succession.Input;
-using Succession.People;
-using Succession.Util;
 
 namespace Succession
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
-            IPopulationInput input = new ConsoleInput();
-            Country utopia = CreateCountry(input);
+            ICountryInput input = new ConsoleInput();
+            Country utopia = new Country(input);
 
             string heir = utopia.GetHeir();
             Console.WriteLine(heir);
-        }
-
-        private static Country CreateCountry(IPopulationInput input)
-        {
-            Population population = new Population(input);
-            return new Country(population);
         }
     }
 }

@@ -5,20 +5,20 @@ namespace Succession
 {
     public class Country
     {
-        private readonly Population _population;
-        public Country(Population population)
+        private readonly ICountryInput _input;
+        public Country(ICountryInput input)
         {
-            _population = population;
+            _input = input;
         }
 
         public string GetHeir()
         {
-            Founder founder = _population.GetFounder();
-            ReadOnlyDictionary<string, IPerson> descendants = _population.GetDescendants(founder);
-
-            string heir = "";
-            decimal royalBlood = 0;
-            foreach (string name in _population.GetClaimants())
+            Founder founder = new Founder(_input.GetFounder(), _input.GetFamilyTree());
+            ReadOnlyDictionary<string, IPerson> descendants = founder.Descendants;
+            
+            string heir = string.Empty;
+            decimal royalBlood = decimal.Zero;
+            foreach (string name in _input.GetClaimants())
             {
                 if (descendants.TryGetValue(name, out IPerson person))
                 {

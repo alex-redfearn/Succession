@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using Succession.People;
 using Succession.Util;
 
 namespace Succession.Input
 {
-    public class ConsoleInput : IPopulationInput
+    public class ConsoleInput : ICountryInput
     {
         private static readonly int FAMILY_START_LINE = 2;
 
@@ -17,13 +16,13 @@ namespace Succession.Input
         public ConsoleInput()
         {
             _input = ReadLines();
-            
+
             int[] counts = GetCounts();
             _familyCount = counts[0];
             _calimantCount = counts[1];
         }
 
-        private List<string> ReadLines()
+        private static List<string> ReadLines()
         {
             List<string> lines = new List<string>();
             while (true)
@@ -55,7 +54,7 @@ namespace Succession.Input
             return _input[1];
         }
 
-        public ReadOnlyCollection<string> GetFamilies()
+        public ReadOnlyCollection<string> GetFamilyTree()
         {
             return _input.GetRange(FAMILY_START_LINE, _familyCount).AsReadOnly();
         }

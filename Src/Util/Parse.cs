@@ -6,7 +6,7 @@ namespace Succession.Util
     {
         public static int[] SplitNumericList(string list, string seperator)
         {
-            return list.Split(" ")
+            return list.Split(seperator)
                 .Select(number => ParseInt(number))
                 .ToArray();
         }
@@ -18,10 +18,10 @@ namespace Succession.Util
 
         private static int ParseInt(string number)
         {
-            if(int.TryParse(number,out int output))
+            if (int.TryParse(number, out int output))
             {
                 return output;
-            } 
+            }
             else return 0;
         }
     }
